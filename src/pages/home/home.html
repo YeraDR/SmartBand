@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Home</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <h2>OPEN SMARTBAND!</h2>
+  <img  src="assets/images/logo_vertical.jpg" alt="Smiley face" align="center" height="100" width="100">
+  <p>
+      Trabajo de Fin de Grado.
+      Universidad de La Laguna.
+    </p>
+
+  <p>
+    Press "SCAN" to find bluetooth devices
+  </p>
+
+  <ion-buttons end>
+    <button (click) = "startScanning()" >Scan</button>
+  </ion-buttons>
+
+
+  <ion-list>
+    <ion-item-sliding *ngFor="let device of devicesArray">
+      <button ion-item (click)="connectToDevice(device)">
+        <h2>{{device.name}}</h2>
+        <p>{{device.id}}</p>
+        <p>{{device.rssi}}</p>
+      </button>
+    </ion-item-sliding>
+  </ion-list>
+
+  <ion-spinner *ngIf="isScanning==true" name="circles"></ion-spinner>
+
+</ion-content>
