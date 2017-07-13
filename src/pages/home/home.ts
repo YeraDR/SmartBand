@@ -24,6 +24,9 @@ export class HomePage {
     this.text="no connected!";
   }
 
+  clearStore(){
+    window.localStorage.clear();
+  }
 
   startScanning(){
     let arrayDevices = [];
@@ -77,13 +80,15 @@ export class HomePage {
           //si ya habia datos en el localStorage
           if(dataStored){
             dataStored.push(bluetoothSerialData);
-            window.localStorage.setItem('arduino', JSON.stringify(dataStored));
+            let aux1 =JSON.stringify(dataStored);
+            window.localStorage.setItem('arduino', aux1);
           }
           //si el localStorage estaba vacio
           else{
             let primero = [];
             primero.push(bluetoothSerialData);
-            window.localStorage.setItem('arduino', JSON.stringify(primero));
+            let aux2 = JSON.stringify(primero);
+            window.localStorage.setItem('arduino', aux2 );
           }
 
         });
