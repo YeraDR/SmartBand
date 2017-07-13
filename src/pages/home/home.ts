@@ -17,12 +17,13 @@ export class HomePage {
   devicesArray = [];
   isScanning = false;
   text:string;
+  valorDeLS: string = 'blabla';
 
 
   constructor(public navCtrl: NavController, public nativeStorage: NativeStorage) {
     this.text="no connected!";
-
   }
+
 
   startScanning(){
     let arrayDevices = [];
@@ -57,46 +58,35 @@ export class HomePage {
   connectToDevice(device) {
     var dataStored = [];
 
+    // connect to device
     BluetoothSerial.connect(device.address).subscribe((result)=>{
-      console.log("Connect To Device");
-      console.log(result);
       if(result === "OK"){
-        console.log("dentro de OK ");
-        BluetoothSerial.subscribe("\n").subscribe((data) => {
-          console.log("Recibido:    " + data);
-          this.nativeStorage.getItem('arduino')
-            .then(
-              data => {console.log("arduino: " + data);dataStored = JSON.parse(data);},
-              error => console.error(error)
-          );
 
+        // si connect OK -> leemos datos
+        BluetoothSerial.subscribe("\n").subscribe((bluetoothSerialData) => {
+          console.log("Recibido:    " + bluetoothSerialData);
+
+          // obtenemos lo que hay en el localStorage
+          this.valorDeLS = window.localStorage.getItem('arduino');
+          console.log('valorDeLS', this.valorDeLS);
+          //si no existe datos en el localStorage
+          if(this.valorDeLS != null){
+            dataStored = JSON.parse(this.valorDeLS);
+          };
           console.log("dataStored:     " + dataStored);
+          //si ya habia datos en el localStorage
+          if(dataStored){
+            dataStored.push(bluetoothSerialData);
+            window.localStorage.setItem('arduino', JSON.stringify(dataStored));
+          }
+          //si el localStorage estaba vacio
+          else{
+            let primero = [];
+            primero.push(bluetoothSerialData);
+            window.localStorage.setItem('arduino', JSON.stringify(primero));
+          }
 
-          var dataItem = JSON.parse(data);
-          console.log("A guardar: " + JSON.stringify(dataItem));
-
-          //dataStored.concat(dataItem);
-          dataStored.push(dataItem);
-          //dataStored.push(dataItem);
-          console.log("Guardado:    " + JSON.stringify(dataStored));
-
-        this.nativeStorage.setItem('arduino', JSON.stringify(dataStored))
-        .then(
-          () => console.log('Stored item!'),
-          error => console.error('Error storing item', error)
-        );
-
-        console.log('esto es lo que hay en STORAGE');
-        this.nativeStorage.getItem('arduino')
-          .then(
-            data => console.log(data),
-            error => console.error(error)
-          );
-
-        } );
-
-
-
+        });
       }
     });
 

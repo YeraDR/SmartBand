@@ -2,6 +2,8 @@ import { Component , ViewChild} from '@angular/core';
 import { NavController } from 'ionic-angular';
 //import { Storage } from '@ionic/storage'
 import { Chart } from 'chart.js';
+import { NativeStorage } from '@ionic-native/native-storage';
+
 
 
 
@@ -16,8 +18,11 @@ export class AboutPage {
   @ViewChild('barCanvas') barCanvas;
   lineChart: any;
   barChart: any;
+  objectString : undefined;
 
-  constructor(public navCtrl: NavController) {
+  //valorDeLS: string = 'blabla';
+
+  constructor(public navCtrl: NavController, public nativeStorage: NativeStorage) {
     // get data from localStorage
     // this.processData(dataStored);
     // console.log('storageData > !! ');
@@ -30,19 +35,55 @@ export class AboutPage {
 
   }
 
+  readFromLs = () => {
+    let objectString  = window.localStorage.getItem('arduino');
+    console.log('Hemos leido de LS:', objectString );
+    if(objectString){
+      let arrayTemperatura = JSON.parse(objectString);
+      console.log('arrayTemperatura', arrayTemperatura);
+    }
 
 
 
+  //  arrayTemperatura.map(item => [item.temperature , item.timeStamp]);
+
+  //  console.log('arrayTemperatura', arrayTemperatura);
+
+
+  }
+
+
+  // test(){
+  //   this.nativeStorage.getItem('arduino')
+  //     .then(
+  //       data => console.log(data),
+  //       error => console.error(error)
+  //     );
+  //     this.ionViewDidLoad();
+  // }
 
   ionViewDidLoad() {
-
+    var temps = [];
+    var arduino = []
+    this.nativeStorage.getItem('arduino')
+      .then(
+        data => arduino = JSON.parse(data),
+        error => console.error(error)
+      );
+      console.log("arduinoooo: " + arduino);
+      for(var item in arduino) {
+        var jsonItem = JSON.parse(item);
+        console.log("jsonItem : " + jsonItem);
+        temps.push(jsonItem.get("temperature"));
+      }
+      console.log("temps: " + temps);
         this.barChart = new Chart(this.barCanvas.nativeElement, {
 
             type: 'bar',
             data: {
                 labels: ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"],
                 datasets: [{
-                    label: 'Pasos al día',
+                    label: 'Temperaturas',
                     data: [12, 19, 3, 5, 2, 3, 9],
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.2)',

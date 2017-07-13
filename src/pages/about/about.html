@@ -7,18 +7,23 @@
 </ion-header>
 
 <ion-content>
-  <ion-buttons end>
-    <button (click) = "startSync()" >SYNC</button>
-  </ion-buttons>
+  <!-- <ion-buttons end>
+    <button (click) = "test()" >SYNC</button>
+  </ion-buttons> -->
+  <button ion-button primary (click) = "readFromLs()" >SYNC</button>
 
     <ion-card>
       <ion-card-header>
-        Pasos
+        TEMPERATURA
+        <span> {{objectString}} </span>
       </ion-card-header>
       <ion-card-content>
         <canvas #barCanvas></canvas>
       </ion-card-content>
     </ion-card>
+
+
+
 
     <!-- <ion-card>
       <ion-card-header>
