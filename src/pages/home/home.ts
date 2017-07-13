@@ -25,7 +25,11 @@ export class HomePage {
   }
 
   clearStore(){
+    let a = window.localStorage.getItem('arduino');
+    console.log(a);
     window.localStorage.clear();
+    let b = window.localStorage.getItem('arduino');
+    console.log(b);
   }
 
   startScanning(){
