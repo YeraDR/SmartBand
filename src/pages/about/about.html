@@ -12,17 +12,64 @@
   </ion-buttons> -->
   <button ion-button primary (click) = "readFromLs()" >SYNC</button>
 
+    <ion-card class="temperature">
+      <ion-card-header class="color-white">
+        <ion-icon name="medkit"></ion-icon>
+        TEMPERATURA
+      </ion-card-header>
+      <ion-card-content class="color-white">
+        temperatura actual
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card class="pulse">
+      <ion-card-header class="color-white">
+        <ion-icon name="pulse"></ion-icon>
+        Pulso
+      </ion-card-header>
+      <ion-card-content class="color-white">
+        pulso actual
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card class="step">
+      <ion-card-header class="color-white">
+        <ion-icon name="walk"></ion-icon>
+        Pasos
+      </ion-card-header>
+      <ion-card-content class="color-white">
+        pasos actual
+      </ion-card-content>
+    </ion-card>
+
+
     <ion-card>
       <ion-card-header>
-        TEMPERATURA
+        Temperaturas
+      </ion-card-header>
+      <ion-card-content>
+        <canvas #lineCanvas></canvas>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+      <ion-card-header>
+        Pulso
+      </ion-card-header>
+      <ion-card-content>
+        <canvas #lineCanvas></canvas>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+      <ion-card-header>
+        Pasos
         <span> {{objectString}} </span>
       </ion-card-header>
       <ion-card-content>
         <canvas #barCanvas></canvas>
       </ion-card-content>
     </ion-card>
-
-
 
 
     <!-- <ion-card>
@@ -34,13 +81,5 @@
       </ion-card-content>
     </ion-card> -->
 
-    <ion-card>
-      <ion-card-header>
-        Pulso
-      </ion-card-header>
-      <ion-card-content>
-        <canvas #lineCanvas></canvas>
-      </ion-card-content>
-    </ion-card>
 
 </ion-content>

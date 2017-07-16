@@ -6,24 +6,30 @@
 
 <ion-content padding>
 
-  <h2>OPEN SMARTBAND!</h2>
-  <img  src="assets/images/logo_vertical.jpg" alt="Smiley face" align="center" height="100" width="100">
-  <p>
+  <h2 style=" display:flex; margin:0 auto ">OPEN SMARTBAND!</h2>
+  <img  src="assets/images/logo_vertical.jpg" alt="Smiley face"  style=" display:flex; margin:0 auto " height="150" width="150">
+  <p style=" display:flex; margin:0 auto ">
       Trabajo de Fin de Grado.
       Universidad de La Laguna.
   </p>
-  <ion-buttons end>
-    <button ion-button primary (click) = "clearStore()" >Clear LS</button>
-  </ion-buttons>
 
-  <p>
+  <!-- <p style=" display:flex; margin:0 auto ">
     Press "SCAN" to find bluetooth devices
-  </p>
+  </p> -->
+
+  <ion-card>
+    <ion-card-header>
+      Press "SCAN" to find bluetooth devices
+    </ion-card-header>
+    <ion-card-content>
+      <ion-buttons end>
+        <button ion-button primary (click) = "startScanning()" >SCAN</button>
+      </ion-buttons>
+    </ion-card-content>
+  </ion-card>
 
 
-  <ion-buttons end>
-    <button ion-button primary (click) = "startScanning()" >SCAN</button>
-  </ion-buttons>
+
 
 
   <ion-list>
