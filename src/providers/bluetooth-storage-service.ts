@@ -53,6 +53,11 @@ export class BluetoothStorageService {
   constructor() {
 		this.db = new SQLite;
 		this.ready$ = new Subject<void>();
+    this.ready$.subscribe(
+      v => console.log(' ready ' + v),
+      e => console.log('ready error ' + e),
+      () => console.log('ready$ is ready')
+    );
   }
 
 	openDB(): Observable<any> {
@@ -97,14 +102,13 @@ export class BluetoothStorageService {
     console.log('> > Service.getAll ! ');
     let sql = 'SELECT * FROM samples';
     return this.chain(sql)
-			.do(response =>{
-				console.log('response getAll() :', response.rows);
+			.do(response => console.log('response getAll() :', response.rows))
+      .map(response => response.rows.slice());
 				// let messages = [];
 				// for (let index = 0; index < response.rows.length; index++){
 				// 	messages.push( response.rows.item(index));
 				// }
 				// return Promise.resolve(messages);
-			})
   }
   countRows() {
     let sql = 'SELECT COUNT(*) FROM samples';
@@ -127,7 +131,13 @@ export class BluetoothStorageService {
     return this.chain(sql);
 	}
 	private chain<T>(q:string, params=[]) {
-		return Observable.concat(this.ready$, Observable.of(1))
-			.switchMap(() => this.db.executeSql(q, params));
+    console.log('chain query' +q);
+    let log = n => v => console.log(n+':'+v);
+		return Observable.concat(this.ready$,
+      Observable.of(1).do(log('of value:')))
+			.switchMap(v => {
+        log('switching ....')(v);
+        return this.db.executeSql(q, params);
+      });
 	}
 }

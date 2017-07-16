@@ -43,13 +43,10 @@ export class AboutPage {
 
 
   readFromLs = () => {
-   this.bluetoothStorageService.getAll()
-    .then(data => {
-      this.bdata = data
-    })
-    .catch(error =>{
-      console.log(error);
-    });
+   this.bluetoothStorageService.getAll().subscribe(
+     value => console.log('value' + value),
+     error => console.log('error en el getAll')
+   );
 
   //  arrayTemperatura.map(item => [item.temperature , item.timeStamp]);
 

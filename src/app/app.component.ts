@@ -19,7 +19,10 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
       statusBar.styleDefault();
       splashScreen.hide();
-      bluetoothStorageService.openDB();
+      bluetoothStorageService.openDB().subscribe(
+        value => console.log('db opened'),
+        error => console.log('error al abrir db')
+      );
     });
 
   }
