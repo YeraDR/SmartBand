@@ -2,7 +2,8 @@ import { Component , ViewChild} from '@angular/core';
 import { NavController } from 'ionic-angular';
 //import { Storage } from '@ionic/storage'
 import { Chart } from 'chart.js';
-import { NativeStorage } from '@ionic-native/native-storage';
+import { BluetoothStorageService } from '../../providers/bluetooth-storage-service';
+
 
 
 
@@ -18,11 +19,11 @@ export class AboutPage {
   @ViewChild('barCanvas') barCanvas;
   lineChart: any;
   barChart: any;
-  objectString : undefined;
+  objectString : any;
 
   //valorDeLS: string = 'blabla';
 
-  constructor(public navCtrl: NavController, public nativeStorage: NativeStorage) {
+  constructor(public navCtrl: NavController, public bluetoothStorageService:BluetoothStorageService) {
     // get data from localStorage
     // this.processData(dataStored);
     // console.log('storageData > !! ');
@@ -35,15 +36,16 @@ export class AboutPage {
 
   }
 
+
+
   readFromLs = () => {
-    let objectString  = window.localStorage.getItem('arduino');
-    console.log('Hemos leido de LS:', objectString );
-    if(objectString){
-      let arrayTemperatura = JSON.parse(objectString);
-      console.log('arrayTemperatura', arrayTemperatura);
-    }
+   this.objectString = JSON.stringify(this.bluetoothStorageService.getAll());
+   console.log('bd en about.ts' + this.objectString);
 
-
+   let prueba = this.bluetoothStorageService.countRows().then((item)=>{
+     console.log('item' +  item);
+   });
+   console.log('prueba' + JSON.stringify(prueba) ); 
 
   //  arrayTemperatura.map(item => [item.temperature , item.timeStamp]);
 
@@ -53,32 +55,8 @@ export class AboutPage {
   }
 
 
-  // test(){
-  //   this.nativeStorage.getItem('arduino')
-  //     .then(
-  //       data => console.log(data),
-  //       error => console.error(error)
-  //     );
-  //     this.ionViewDidLoad();
-  // }
-
   ionViewDidLoad() {
-    var temps = [];
-    var arduino = []
-    this.nativeStorage.getItem('arduino')
-      .then(
-        data => arduino = JSON.parse(data),
-        error => console.error(error)
-      );
-      console.log("arduinoooo: " + arduino);
-      for(var item in arduino) {
-        var jsonItem = JSON.parse(item);
-        console.log("jsonItem : " + jsonItem);
-        temps.push(jsonItem.get("temperature"));
-      }
-      console.log("temps: " + temps);
         this.barChart = new Chart(this.barCanvas.nativeElement, {
-
             type: 'bar',
             data: {
                 labels: ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"],

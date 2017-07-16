@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
-//import {DevicePage} from '../device/device';
-import {BluetoothSerial} from 'ionic-native';///bluetooth-serial';
-//import { Storage } from '@ionic/storage';
-import { NativeStorage } from '@ionic-native/native-storage';
+import { BluetoothSerial } from 'ionic-native';///bluetooth-serial';
+import { BluetoothStorageService } from '../../providers/bluetooth-storage-service';
+import * as moment from 'moment';
+
 
 
 
@@ -19,8 +19,13 @@ export class HomePage {
   text:string;
   valorDeLS: string = 'blabla';
 
+  messages: any[] = [];
 
-  constructor(public navCtrl: NavController, public nativeStorage: NativeStorage) {
+  date: moment.Moment;
+
+
+  constructor(public navCtrl: NavController, public bluetoothStorageService:BluetoothStorageService
+  ) {
     this.text="no connected!";
   }
 
@@ -70,35 +75,20 @@ export class HomePage {
       if(result === "OK"){
 
         // si connect OK -> leemos datos
-        BluetoothSerial.subscribe("\n").subscribe((bluetoothSerialData) => {
-          console.log("Recibido:    " + bluetoothSerialData);
-
-          // obtenemos lo que hay en el localStorage
-          this.valorDeLS = window.localStorage.getItem('arduino');
-          console.log('valorDeLS', this.valorDeLS);
-          //si no existe datos en el localStorage
-          if(this.valorDeLS != null){
-            dataStored = JSON.parse(this.valorDeLS);
-          };
-          console.log("dataStored:     " + dataStored);
-          //si ya habia datos en el localStorage
-          if(dataStored){
-            dataStored.push(bluetoothSerialData);
-            let aux1 =JSON.stringify(dataStored);
-            window.localStorage.setItem('arduino', aux1);
-          }
-          //si el localStorage estaba vacio
-          else{
-            let primero = [];
-            primero.push(bluetoothSerialData);
-            let aux2 = JSON.stringify(primero);
-            window.localStorage.setItem('arduino', aux2 );
-          }
-
-        });
+        BluetoothSerial.subscribe("\n").subscribe(
+          value => this.saveMessage(value),
+          error => console.log('ERROR! message not found')
+        );
       }
     });
-
   }
 
+  saveMessage(bluetoothSerialData){
+    console.log("Recibido:    " + bluetoothSerialData);
+    let messageData = JSON.parse(bluetoothSerialData);
+    this.bluetoothStorageService.insert(messageData).then((data)=>{
+      console.log('se envió ' + JSON.stringify(messageData));
+      console.log('data result of insert' + data);
+    });
+  }
 }
