@@ -21,6 +21,9 @@ export class AboutPage {
   barChart: any;
   objectString : any;
 
+  bdata: any[] = [];
+
+
   //valorDeLS: string = 'blabla';
 
   constructor(public navCtrl: NavController, public bluetoothStorageService:BluetoothStorageService) {
@@ -39,18 +42,15 @@ export class AboutPage {
 
 
   readFromLs = () => {
-   this.objectString = JSON.stringify(this.bluetoothStorageService.getAll());
-   console.log('bd en about.ts' + this.objectString);
-
-   let prueba = this.bluetoothStorageService.countRows().then((item)=>{
-     console.log('item' +  item);
-   });
-   console.log('prueba' + JSON.stringify(prueba) ); 
+   this.bluetoothStorageService.getAll()
+    .then(data => {
+      this.bdata = data
+    })
+    .catch(error =>{
+      console.log(error);
+    });
 
   //  arrayTemperatura.map(item => [item.temperature , item.timeStamp]);
-
-  //  console.log('arrayTemperatura', arrayTemperatura);
-
 
   }
 

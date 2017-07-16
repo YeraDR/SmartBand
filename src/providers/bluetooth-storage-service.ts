@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
-import { SQLite} from 'ionic-native';
 import 'rxjs/add/operator/map';
+import { SQLite } from 'ionic-native';
 
 /*
   Generated class for the BluetoothStorageService provider.
@@ -9,46 +9,55 @@ import 'rxjs/add/operator/map';
   See https://angular.io/docs/ts/latest/guide/dependency-injection.html
   for more info on providers and Angular 2 DI.
 */
+declare var window :any
 @Injectable()
 export class BluetoothStorageService {
   db: SQLite = null;
 
+
   constructor(public http: Http) {
-    console.log('Hello BluetoothStorageService Provider');
-    this.db = new SQLite();
+    if(this.db === null){
+      this.db = new SQLite;
+    }
+  }
+
+  openDB(){
+    console.log('en openDB');
+    this.db.openDatabase({
+      name:'data.db',
+      location:'default'
+    })
+    .then(() =>{
+      console.log('OPENED DATA BASE!')
+      this.createTable();
+    })
   }
 
   // add new message to db
-  insert(message: any){
+  insert(sample: any){
     console.log('> > Service.insert ! ');
 
-    let mssg = JSON.stringify(message);
-    let item = JSON.parse(mssg);
-
-    console.log('item' + item);
-    console.log(JSON.stringify(item));
-
-    let sql = "INSERT INTO messages(pulso,temperatura,acx,acy,acz,gx,gy,gz) VALUES (?,?,?,?,?,?,?,?)" ;
-    return this.db.executeSql(sql, [item.pulso,item.temperatura, item.acx, item.acy, item.acz, item.gx, item.gy, item.gz]).then(
+    let sql = "INSERT INTO samples(pulso,temperatura,acx,acy,acz,gx,gy,gz) VALUES (?,?,?,?,?,?,?,?)" ;
+    return this.db.executeSql(sql, [sample.pulso,sample.temperatura, sample.acx, sample.acy, sample.acz, sample.gx, sample.gy, sample.gz]).then(
       value => console.log("retorno insert" + JSON.stringify(value)),
       error => console.log('ERROR! message not inserted')
     );
   }
 
   createTable(){
-    let sql = " CREATE TABLE IF NOT EXISTS messages(id INTEGER PRIMARY KEY AUTOINCREMENT,pulso INTEGER,temperatura INTEGER,acx INTEGER,acy INTEGER,acz INTEGER,gx INTEGER,gy INTEGER,gz INTEGER)"
+    let sql = " CREATE TABLE IF NOT EXISTS samples (id INTEGER PRIMARY KEY AUTOINCREMENT,pulso INTEGER,temperatura INTEGER,acx INTEGER,acy INTEGER,acz INTEGER,gx INTEGER,gy INTEGER,gz INTEGER)"
     return this.db.executeSql(sql, []);
   }
 
-  delete(message: any){
-    let sql = 'DELETE FROM messages WHERE id=?';
-    return this.db.executeSql(sql, [message.id]);
+  delete(sample: any){
+    let sql = 'DELETE FROM samples WHERE id=?';
+    return this.db.executeSql(sql, [sample.id]);
   }
 
   getAll(){
     console.log('> > Service.getAll ! ');
 
-    let sql = 'SELECT * FROM messages';
+    let sql = 'SELECT * FROM samples';
     return this.db.executeSql(sql, [])
     .then( response =>{
       console.log('response getAll() :', response.rows);
@@ -63,16 +72,9 @@ export class BluetoothStorageService {
   }
 
   countRows(){
-    let sql = 'SELECT COUNT(*) FROM messages';
+    let sql = 'SELECT COUNT(*) FROM samples';
     return this.db.executeSql(sql, []).then( response =>{
       console.log('response getAll() :', response);
-    })
-  }
-
-  openDatabase(){
-    return this.db.openDatabase({
-      name:'data.db',
-      location: 'default'
     })
   }
 

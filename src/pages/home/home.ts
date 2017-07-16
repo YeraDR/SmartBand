@@ -86,6 +86,8 @@ export class HomePage {
   saveMessage(bluetoothSerialData){
     console.log("Recibido:    " + bluetoothSerialData);
     let messageData = JSON.parse(bluetoothSerialData);
+    
+    this.bluetoothStorageService.openDB();
     this.bluetoothStorageService.insert(messageData).then((data)=>{
       console.log('se envió ' + JSON.stringify(messageData));
       console.log('data result of insert' + data);

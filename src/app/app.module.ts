@@ -44,8 +44,10 @@ import { BluetoothStorageService} from '../providers/bluetooth-storage-service';
   providers: [
     StatusBar,
     SplashScreen,
+    SQLite,
+    BluetoothStorageService,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    NativeStorage, BluetoothStorageService
+    NativeStorage
   ]
 })
 export class AppModule {}
