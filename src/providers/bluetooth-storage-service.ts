@@ -44,7 +44,7 @@ export class BluetoothStorageService {
       console.log('pulse ok');
     }
     if(item.temperature){
-       t = item.pulse;
+       t = item.temperature;
       console.log('temperature ok ')
     }
     if(item.accel[0]){
@@ -112,6 +112,17 @@ export class BluetoothStorageService {
 
     })
   }
+
+
+  // getMax(){
+  //   console.log('> > Service.getAll ! ');
+  //
+  //   let sql = 'SELECT * FROM BTsamples WHERE id = (SELECT MAX(BTsamples.id) FROM BTsamples)';
+  //   return this.db.executeSql(sql, [])
+  //   .then( response =>{
+  //     console.log('response getMax() :', response.rows);
+  //   })
+  // }
 
   countRows(){
     let sql = 'SELECT COUNT(*) FROM samples';

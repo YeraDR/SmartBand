@@ -21,8 +21,12 @@ export class AboutPage {
   lineChart2: any;
   barChart: any;
   objectString : any;
+  currentPulse : any;
+  currentTemperature : any;
+
 
   bdata: any[] = [];
+  arrayTemperatura: any[] = [];
 
 
   //valorDeLS: string = 'blabla';
@@ -42,18 +46,34 @@ export class AboutPage {
 
 
 
-  readFromLs = () => {
+  readAll = () => {
+    console.log('dentro del readAll');
    this.bluetoothStorageService.getAll()
     .then(data => {
-      this.bdata = data
+      console.log('bd data ' + JSON.stringify(data));
+      this.showBD(this.bdata = data);
     })
     .catch(error =>{
-      console.log(error);
+      console.log('error getAll'+ error);
     });
 
   //  arrayTemperatura.map(item => [item.temperature , item.timeStamp]);
-
+  //  this.getMax();
   }
+
+  showBD(items){
+    console.log('datos bd' + JSON.stringify(items));
+    let currentSample = items[items.length-1];
+    this.currentPulse = JSON.stringify(currentSample.pulso);
+    this.currentTemperature = JSON.stringify(currentSample.temperatura);
+  }
+
+  // getMax(){
+  //   this.bluetoothStorageService.getMax().then(
+  //     value => console.log('max value '+ value),
+  //     error => console.log(' error max value' + error)
+  //   )
+  // }
 
 
   ionViewDidLoad() {

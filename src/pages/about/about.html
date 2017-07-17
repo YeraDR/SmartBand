@@ -10,7 +10,7 @@
   <!-- <ion-buttons end>
     <button (click) = "test()" >SYNC</button>
   </ion-buttons> -->
-  <button ion-button primary (click) = "readFromLs()" >SYNC</button>
+  <button ion-button primary (click) = "readAll()" >SYNC</button>
 
     <ion-card class="temperature">
       <ion-card-header class="color-white">
@@ -18,7 +18,7 @@
         TEMPERATURA
       </ion-card-header>
       <ion-card-content class="color-white">
-        temperatura actual
+        <span> {{currentTemperature}} </span>
       </ion-card-content>
     </ion-card>
 
@@ -28,7 +28,7 @@
         Pulso
       </ion-card-header>
       <ion-card-content class="color-white">
-        pulso actual
+        <span> {{currentPulse}} </span>
       </ion-card-content>
     </ion-card>
 
