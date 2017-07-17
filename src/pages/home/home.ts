@@ -86,11 +86,29 @@ export class HomePage {
   saveMessage(bluetoothSerialData){
     console.log("Recibido:    " + bluetoothSerialData);
     let messageData = JSON.parse(bluetoothSerialData);
-    
+
     this.bluetoothStorageService.openDB();
-    this.bluetoothStorageService.insert(messageData).then((data)=>{
-      console.log('se envió ' + JSON.stringify(messageData));
-      console.log('data result of insert' + data);
+    this.bluetoothStorageService.insert(messageData)
+      .then(data=>{
+        console.log('insert result' + JSON.stringify(data))
+      })
+      .catch(error =>{
+        console.log('error insert result' )
+      })
+  }
+
+
+  readAll = () => {
+    console.log('dentro del readAll');
+   this.bluetoothStorageService.getAll()
+    .then(data => {
+      console.log('bd data ' + JSON.stringify(data))
+    })
+    .catch(error =>{
+      console.log('error getAll'+ error);
     });
+
+  //  arrayTemperatura.map(item => [item.temperature , item.timeStamp]);
+
   }
 }
