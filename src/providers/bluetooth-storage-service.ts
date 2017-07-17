@@ -38,7 +38,7 @@ export class BluetoothStorageService {
     console.log('> > Service.insert ! ');
     let asam = JSON.stringify(sample);
     let item = JSON.parse(asam);
-    let p, t, acx, acy, acz, gx, gy, gz: any;
+    let p, t, acx, acy, acz, gx, gy, gz, ts: any;
     if(item.pulse){
        p = item.pulse;
       console.log('pulse ok');
@@ -71,20 +71,24 @@ export class BluetoothStorageService {
        gz = item.gyro[2];
       console.log('gz ok')
     }
+    if(item.timeStamp){
+      ts = item.timeStamp;
+      console.log('ts ok')
+    }
 
 
 
     console.log('sample sent' +  JSON.stringify(item));
 
-    let sql = "INSERT INTO BTsamples (pulso,temperatura,acx,acy,acz,gx,gy,gz) VALUES (?,?,?,?,?,?,?,?)" ;
-    return this.db.executeSql(sql, [p,t,acx,acy, acz, gx, gy, gz]).then(
+    let sql = "INSERT INTO BtoothSamples (pulso,temperatura,acx,acy,acz,gx,gy,gz,timeStamp) VALUES (?,?,?,?,?,?,?,?,?)" ;
+    return this.db.executeSql(sql, [p,t,acx,acy, acz, gx, gy, gz,ts]).then(
       value => console.log("retorno insert" + JSON.stringify(value)),
       error => console.log('ERROR! message not inserted')
     );
   }
 
   createTable(){
-    let sql = " CREATE TABLE IF NOT EXISTS BTsamples (id INTEGER PRIMARY KEY AUTOINCREMENT,pulso INTEGER,temperatura INTEGER,acx INTEGER,acy INTEGER,acz INTEGER,gx INTEGER,gy INTEGER,gz INTEGER)"
+    let sql = " CREATE TABLE IF NOT EXISTS BtoothSamples (id INTEGER PRIMARY KEY AUTOINCREMENT,pulso INTEGER,temperatura INTEGER,acx INTEGER,acy INTEGER,acz INTEGER,gx INTEGER,gy INTEGER,gz INTEGER, timeStamp TEXT)"
     return this.db.executeSql(sql, []).then(
       value => console.log('bd creada'),
       error => console.log('bd ya existe')
@@ -92,14 +96,14 @@ export class BluetoothStorageService {
   }
 
   delete(sample: any){
-    let sql = 'DELETE FROM samples WHERE id=?';
+    let sql = 'DELETE FROM BtoothSamples WHERE id=?';
     return this.db.executeSql(sql, [sample.id]);
   }
 
   getAll(){
     console.log('> > Service.getAll ! ');
 
-    let sql = 'SELECT * FROM BTsamples';
+    let sql = 'SELECT * FROM BtoothSamples';
     return this.db.executeSql(sql, [])
     .then( response =>{
       console.log('response getAll() :', response.rows);
@@ -125,7 +129,7 @@ export class BluetoothStorageService {
   // }
 
   countRows(){
-    let sql = 'SELECT COUNT(*) FROM samples';
+    let sql = 'SELECT COUNT(*) FROM BtoothSamples';
     return this.db.executeSql(sql, []).then( response =>{
       console.log('response getAll() :', response);
     })

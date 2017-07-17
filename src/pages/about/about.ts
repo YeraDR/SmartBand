@@ -16,7 +16,6 @@ import { BluetoothStorageService } from '../../providers/bluetooth-storage-servi
 
 export class AboutPage {
   @ViewChild('lineCanvas') lineCanvas;
-  @ViewChild('lineCanvas2') lineCanvas2;
   @ViewChild('barCanvas') barCanvas;
   lineChart: any;
   lineChart2: any;
@@ -26,10 +25,11 @@ export class AboutPage {
   currentTemperature : any;
 
 
+
   bdata: any[] = [];
   arrayTemperature: any[] = [];
   arrayPulse: any[] = [];
-
+  arrayTimeStamp: any[] = [];
 
   //valorDeLS: string = 'blabla';
 
@@ -71,6 +71,7 @@ export class AboutPage {
 
     this.arrayTemperature  = items.map(item => item.temperatura );
     this.arrayPulse  = items.map(item => item.pulso );
+    this.arrayTimeStamp = items.map(item => item.timeStamp);
 
     console.log(' array of temp' + this.arrayTemperature);
     console.log(' array of pulse' + this.arrayPulse);
@@ -126,7 +127,7 @@ export class AboutPage {
         this.lineChart = new Chart(this.lineCanvas.nativeElement, {
             type: 'line',
             data: {
-                labels: [],
+                labels: this.arrayTimeStamp,
                 datasets: [
                     {
                         label: "My First dataset",
@@ -147,44 +148,44 @@ export class AboutPage {
                         pointHoverBorderWidth: 2,
                         pointRadius: 1,
                         pointHitRadius: 10,
-                        data: this.arrayPulse,
+                        data: [[this.arrayPulse] ,[this.arrayTemperature]],
                         spanGaps: false,
                     }
                 ]
             }
 
         });
-        this.lineChart2 = new Chart(this.lineCanvas2.nativeElement, {
-            type: 'line',
-            data: {
-                labels: ["January", "February", "March", "April", "May", "June", "July"],
-                datasets: [
-                    {
-                        label: "My second dataset",
-                        fill: false,
-                        lineTension: 0.1,
-                        backgroundColor: "rgba(75,192,192,0.4)",
-                        borderColor: "rgba(75,192,192,1)",
-                        borderCapStyle: 'butt',
-                        borderDash: [],
-                        borderDashOffset: 0.0,
-                        borderJoinStyle: 'miter',
-                        pointBorderColor: "rgba(75,192,192,1)",
-                        pointBackgroundColor: "#fff",
-                        pointBorderWidth: 1,
-                        pointHoverRadius: 5,
-                        pointHoverBackgroundColor: "rgba(75,192,192,1)",
-                        pointHoverBorderColor: "rgba(220,220,220,1)",
-                        pointHoverBorderWidth: 2,
-                        pointRadius: 1,
-                        pointHitRadius: 10,
-                        data: this.arrayTemperature,
-                        spanGaps: false,
-                    }
-                ]
-            }
-
-        });
+        // this.lineChart2 = new Chart(this.lineCanvas2.nativeElement, {
+        //     type: 'line',
+        //     data: {
+        //         labels: this.arrayTimeStamp,
+        //         datasets: [
+        //             {
+        //                 label: "My second dataset",
+        //                 fill: false,
+        //                 lineTension: 0.1,
+        //                 backgroundColor: "rgba(75,192,192,0.4)",
+        //                 borderColor: "rgba(75,192,192,1)",
+        //                 borderCapStyle: 'butt',
+        //                 borderDash: [],
+        //                 borderDashOffset: 0.0,
+        //                 borderJoinStyle: 'miter',
+        //                 pointBorderColor: "rgba(75,192,192,1)",
+        //                 pointBackgroundColor: "#fff",
+        //                 pointBorderWidth: 1,
+        //                 pointHoverRadius: 5,
+        //                 pointHoverBackgroundColor: "rgba(75,192,192,1)",
+        //                 pointHoverBorderColor: "rgba(220,220,220,1)",
+        //                 pointHoverBorderWidth: 2,
+        //                 pointRadius: 1,
+        //                 pointHitRadius: 10,
+        //                 data: this.arrayTemperature,
+        //                 spanGaps: false,
+        //             }
+        //         ]
+        //     }
+        //
+        // });
     }
 
 }

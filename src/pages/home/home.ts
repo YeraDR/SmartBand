@@ -27,15 +27,16 @@ export class HomePage {
   constructor(public navCtrl: NavController, public bluetoothStorageService:BluetoothStorageService
   ) {
     this.text="no connected!";
+
   }
 
-  clearStore(){
-    let a = window.localStorage.getItem('arduino');
-    console.log(a);
-    window.localStorage.clear();
-    let b = window.localStorage.getItem('arduino');
-    console.log(b);
-  }
+  // clearStore(){
+  //   let a = window.localStorage.getItem('arduino');
+  //   console.log(a);
+  //   window.localStorage.clear();
+  //   let b = window.localStorage.getItem('arduino');
+  //   console.log(b);
+  // }
 
   startScanning(){
     let arrayDevices = [];
@@ -86,6 +87,11 @@ export class HomePage {
   saveMessage(bluetoothSerialData){
     console.log("Recibido:    " + bluetoothSerialData);
     let messageData = JSON.parse(bluetoothSerialData);
+
+    let date = moment().format("YYYY-MM-DD HH:mm:ss");
+    messageData.timeStamp = date;
+    //
+    // console.log('moment formar date ' + a);
 
     this.bluetoothStorageService.openDB();
     this.bluetoothStorageService.insert(messageData)
