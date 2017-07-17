@@ -16,6 +16,7 @@ import { BluetoothStorageService } from '../../providers/bluetooth-storage-servi
 
 export class AboutPage {
   @ViewChild('lineCanvas') lineCanvas;
+  @ViewChild('lineCanvas2') lineCanvas2;
   @ViewChild('barCanvas') barCanvas;
   lineChart: any;
   lineChart2: any;
@@ -26,7 +27,8 @@ export class AboutPage {
 
 
   bdata: any[] = [];
-  arrayTemperatura: any[] = [];
+  arrayTemperature: any[] = [];
+  arrayPulse: any[] = [];
 
 
   //valorDeLS: string = 'blabla';
@@ -66,17 +68,20 @@ export class AboutPage {
     let currentSample = items[items.length-1];
     this.currentPulse = JSON.stringify(currentSample.pulso);
     this.currentTemperature = JSON.stringify(currentSample.temperatura);
+
+    this.arrayTemperature  = items.map(item => item.temperatura );
+    this.arrayPulse  = items.map(item => item.pulso );
+
+    console.log(' array of temp' + this.arrayTemperature);
+    console.log(' array of pulse' + this.arrayPulse);
+
+
+    this.drawGraph();
+
   }
 
-  // getMax(){
-  //   this.bluetoothStorageService.getMax().then(
-  //     value => console.log('max value '+ value),
-  //     error => console.log(' error max value' + error)
-  //   )
-  // }
 
-
-  ionViewDidLoad() {
+  drawGraph() {
         this.barChart = new Chart(this.barCanvas.nativeElement, {
             type: 'bar',
             data: {
@@ -121,7 +126,7 @@ export class AboutPage {
         this.lineChart = new Chart(this.lineCanvas.nativeElement, {
             type: 'line',
             data: {
-                labels: ["January", "February", "March", "April", "May", "June", "July"],
+                labels: [],
                 datasets: [
                     {
                         label: "My First dataset",
@@ -142,14 +147,14 @@ export class AboutPage {
                         pointHoverBorderWidth: 2,
                         pointRadius: 1,
                         pointHitRadius: 10,
-                        data: [65, 59, 80, 81, 56, 55, 40],
+                        data: this.arrayPulse,
                         spanGaps: false,
                     }
                 ]
             }
 
         });
-        this.lineChart2 = new Chart(this.lineCanvas.nativeElement, {
+        this.lineChart2 = new Chart(this.lineCanvas2.nativeElement, {
             type: 'line',
             data: {
                 labels: ["January", "February", "March", "April", "May", "June", "July"],
@@ -173,7 +178,7 @@ export class AboutPage {
                         pointHoverBorderWidth: 2,
                         pointRadius: 1,
                         pointHitRadius: 10,
-                        data: [65, 59, 80, 81, 56, 55, 40],
+                        data: this.arrayTemperature,
                         spanGaps: false,
                     }
                 ]
