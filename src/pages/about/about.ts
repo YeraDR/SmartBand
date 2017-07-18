@@ -70,7 +70,7 @@ export class AboutPage {
     this.currentTemperature = JSON.stringify(currentSample.temperatura);
 
     this.arrayTemperature  = items.map(item => item.temperatura );
-    this.arrayPulse  = items.map(item => item.pulso );
+    this.arrayPulse  = items.map(item => item.pulso/10 );
     this.arrayTimeStamp = items.map(item => item.timeStamp);
 
     console.log(' array of temp' + this.arrayTemperature);
@@ -130,7 +130,7 @@ export class AboutPage {
                 labels: this.arrayTimeStamp,
                 datasets: [
                     {
-                        label: "My First dataset",
+                        label: ["temp"],
                         fill: false,
                         lineTension: 0.1,
                         backgroundColor: "rgba(75,192,192,0.4)",
@@ -148,7 +148,29 @@ export class AboutPage {
                         pointHoverBorderWidth: 2,
                         pointRadius: 1,
                         pointHitRadius: 10,
-                        data: [[this.arrayPulse] ,[this.arrayTemperature]],
+                        data: this.arrayTemperature,
+                        spanGaps: false,
+                    },
+                    {
+                        label: ["pulse"],
+                        fill: false,
+                        lineTension: 0.1,
+                        backgroundColor: "rgba(75,192,192,0.4)",
+                        borderColor: "rgba(75,192,192,1)",
+                        borderCapStyle: 'butt',
+                        borderDash: [],
+                        borderDashOffset: 0.0,
+                        borderJoinStyle: 'miter',
+                        pointBorderColor: "rgba(75,192,192,1)",
+                        pointBackgroundColor: "#fff",
+                        pointBorderWidth: 1,
+                        pointHoverRadius: 5,
+                        pointHoverBackgroundColor: "rgba(75,192,192,1)",
+                        pointHoverBorderColor: "rgba(220,220,220,1)",
+                        pointHoverBorderWidth: 2,
+                        pointRadius: 1,
+                        pointHitRadius: 10,
+                        data: this.arrayPulse ,
                         spanGaps: false,
                     }
                 ]
