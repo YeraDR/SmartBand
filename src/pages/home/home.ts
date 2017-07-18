@@ -101,6 +101,17 @@ export class HomePage {
       .catch(error =>{
         console.log('error insert result' )
       })
+
+    if(messageData.accel[0] !=0 && messageData.accel[1] !=0  ){
+      console.log('messageData.accel[0]' + JSON.stringify(messageData.accel[0]));
+      console.log('messageData.accel[1]' + JSON.stringify(messageData.accel[1]));
+      let date = moment().format("YYYY-MM-DD HH:mm:ss");
+      let paso = {
+        step:1,
+        timeStamp:date
+      }
+      this.bluetoothStorageService.insertStep(paso);
+    }
   }
 
 
